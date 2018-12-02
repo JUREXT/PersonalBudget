@@ -7,6 +7,7 @@ import android.util.Log;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
@@ -99,6 +100,17 @@ public class DatabaseManager {
             }
 
         }
+    }
+
+    public List<BudgetType> getBudgetTypeList(){
+        final List<BudgetType> budgetTypes = new ArrayList<>();
+        budgetTypes.add(BudgetType.UNKNOWN);
+        budgetTypes.add(BudgetType.FOOD);
+        budgetTypes.add(BudgetType.DRINKS);
+        budgetTypes.add(BudgetType.DIESEL);
+        budgetTypes.add(BudgetType.RENT);
+        budgetTypes.add(BudgetType.CAR);
+        return budgetTypes;
     }
 
 
