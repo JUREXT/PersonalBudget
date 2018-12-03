@@ -24,8 +24,7 @@ public class Budget {
     private BudgetType budgetType;
 
     @Generated(hash = 1214732453)
-    public Budget(Long id, Long timeStamp, Double value, String comment,
-                  BudgetType budgetType) {
+    public Budget(Long id, Long timeStamp, Double value, String comment, BudgetType budgetType) {
         this.id = id;
         this.timeStamp = timeStamp;
         this.value = value;

@@ -1,19 +1,22 @@
 package com.example.jure_lokovsek.personalbudget.Fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.jure_lokovsek.personalbudget.Adapters.BudgetAdapter;
+import com.example.jure_lokovsek.personalbudget.Database.Budget;
 import com.example.jure_lokovsek.personalbudget.Database.DatabaseManager;
 import com.example.jure_lokovsek.personalbudget.R;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +41,8 @@ public class BudgetListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private FragmentManager mFragmentManager;
     private DatabaseManager mDatabaseManager;
+    private ListView listView;
+    private List<Budget> budgetList;
 
     public BudgetListFragment() {
         // Required empty public constructor
@@ -69,9 +74,6 @@ public class BudgetListFragment extends Fragment {
         mDatabaseManager = new DatabaseManager(mContext);
         mFragmentManager = getFragmentManager();
 
-
-
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -82,8 +84,12 @@ public class BudgetListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_budget_list, container, false);
-        ((AppCompatActivity)getActivity()).setTitle("Today Budget List");
+        getActivity().setTitle("Today Budget List");
+        listView = view.findViewById(R.id.budget_list_view);
 
+        budgetList = mDatabaseManager.getTodayBudgetList();
+        BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList, mContext);
+        listView.setAdapter(budgetAdapter);
 
 
         return view;

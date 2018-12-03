@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDatabaseManager = new DatabaseManager(mContext);
 
         loadMainFragment();
-        mDatabaseManager.izpis(mDatabaseManager.getTodayBudgetList());
+     //   mDatabaseManager.izpis(mDatabaseManager.getTodayBudgetList());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,15 +112,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+          //  super.onBackPressed();
+            finish();
+
         }
     }
 
