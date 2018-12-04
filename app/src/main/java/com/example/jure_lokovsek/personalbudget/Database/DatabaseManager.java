@@ -34,22 +34,30 @@ public class DatabaseManager {
 
 
     public void storeBudget(Double newValue, BudgetType budgetType, String comment) {
-        long startOfTheDay = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().getMillis();
-        Budget budget = getFindBudget(startOfTheDay, budgetType);
-        budget.setValue(newValue);
+        long currentTime = new DateTime(DateTimeZone.UTC).getMillis();
+        Budget budget = getFindBudget(budgetType);
+        if(budget.getValue() != null){
+            budget.setValue(budget.getValue() + newValue);
+        }else{
+            budget.setValue(newValue);
+        }
         budget.setComment(comment);
-        mDaoSession.update(budget);
+        budget.setTimeStamp(currentTime);
+        updateBudget(budget);
     }
 
     private void updateBudget(Budget budget) {
         mDaoSession.update(budget);
     }
 
-    private Budget getFindBudget(Long timeStamp, BudgetType budgetType) {
-        Budget budgetInDb = mDaoSession.getBudgetDao().queryBuilder().where(BudgetDao.Properties.BudgetType.eq(budgetType), BudgetDao.Properties.TimeStamp.eq(timeStamp)).unique();
+    private Budget getFindBudget(BudgetType budgetType) {
+        long startOfTheDay = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().getMillis();
+        long endOfTheDay = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().plusHours(24).getMillis();
+        Budget budgetInDb = mDaoSession.getBudgetDao().queryBuilder().where(BudgetDao.Properties.TimeStamp.between(startOfTheDay, endOfTheDay), BudgetDao.Properties.BudgetType.eq(budgetType.ordinal())).unique();
+
         if(budgetInDb == null){
-            Log.d(TAG, "Budget not found...creating budget");
-            budgetInDb = new Budget(timeStamp, budgetType);
+            Log.d(TAG, "Budget not found...creating new budget");
+            budgetInDb = new Budget(budgetType);
             mDaoSession.getBudgetDao().insert(budgetInDb);
         }else {
             Log.d(TAG, "Budget Exists");
@@ -83,6 +91,12 @@ public class DatabaseManager {
         } else {
             return sum;
         }
+    }
+
+    public Budget getTodaysBudget(BudgetType budgetType){
+        long startOfTheDay = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().getMillis();
+        long endOfTheDay = new DateTime(DateTimeZone.UTC).withTimeAtStartOfDay().plusHours(24).minusMinutes(1).getMillis();
+        return mDaoSession.getBudgetDao().queryBuilder().where(BudgetDao.Properties.TimeStamp.between(startOfTheDay, endOfTheDay), BudgetDao.Properties.BudgetType.eq(budgetType.ordinal())).unique();
     }
 
     public List<Budget> getTodayBudgetList(){

@@ -1,29 +1,35 @@
 package com.example.jure_lokovsek.personalbudget.Fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.jure_lokovsek.personalbudget.Database.DatabaseManager;
 import com.example.jure_lokovsek.personalbudget.R;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GraphViewFragmen.OnFragmentInteractionListener} interface
+ * {@link GraphViewFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GraphViewFragmen#newInstance} factory method to
+ * Use the {@link GraphViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GraphViewFragmen extends Fragment {
+public class GraphViewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final String TAG = GraphViewFragment.class.getSimpleName();
+    private DatabaseManager mDatabaseManager;
+    private Context mContext;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -31,7 +37,7 @@ public class GraphViewFragmen extends Fragment {
 
   //  private OnFragmentInteractionListener mListener;
 
-    public GraphViewFragmen() {
+    public GraphViewFragment() {
         // Required empty public constructor
     }
 
@@ -41,11 +47,11 @@ public class GraphViewFragmen extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GraphViewFragmen.
+     * @return A new instance of fragment GraphViewFragment.
      */
     // TODO: Rename and change types and number of parameters
-//    public static GraphViewFragmen newInstance(String param1, String param2) {
-//        GraphViewFragmen fragment = new GraphViewFragmen();
+//    public static GraphViewFragment newInstance(String param1, String param2) {
+//        GraphViewFragment fragment = new GraphViewFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -56,6 +62,10 @@ public class GraphViewFragmen extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getContext();
+        mDatabaseManager = new DatabaseManager(mContext);
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -66,7 +76,17 @@ public class GraphViewFragmen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph_view, container, false);
-        ((AppCompatActivity)getActivity()).setTitle("Graph View");
+        (getActivity()).setTitle("Graph View");
+
+        GraphView graph = view.findViewById(R.id.graph);
+
+
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3)
+        });
+        graph.addSeries(series);
 
 
         return view;

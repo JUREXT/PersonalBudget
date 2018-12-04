@@ -18,20 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.jure_lokovsek.personalbudget.Database.Budget;
 import com.example.jure_lokovsek.personalbudget.Database.BudgetType;
 import com.example.jure_lokovsek.personalbudget.Database.DatabaseManager;
 import com.example.jure_lokovsek.personalbudget.Fragment.BudgetListFragment;
-import com.example.jure_lokovsek.personalbudget.Fragment.GraphViewFragmen;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import com.example.jure_lokovsek.personalbudget.Fragment.GraphViewFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -155,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_budget_list) {
             loadMainFragment();
         } else if (id == R.id.nav_graph_view) {
-            GraphViewFragmen budgetListFragment = new GraphViewFragmen();
+            GraphViewFragment budgetListFragment = new GraphViewFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.container_fragment, budgetListFragment);
             ft.addToBackStack(null);

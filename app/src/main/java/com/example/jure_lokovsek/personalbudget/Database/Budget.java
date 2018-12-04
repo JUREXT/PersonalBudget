@@ -39,6 +39,11 @@ public class Budget {
     }
 
     @Keep
+    public Budget(BudgetType budgetType) {
+        this.budgetType = budgetType;
+    }
+
+    @Keep
     public Budget(Long timeStamp, BudgetType budgetType, String comment) {
         this.timeStamp = timeStamp;
         this.budgetType = budgetType;
