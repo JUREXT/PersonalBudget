@@ -9,5 +9,9 @@ public enum BudgetType {
         this.id = id;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
 
 }

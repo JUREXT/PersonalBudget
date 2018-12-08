@@ -1,12 +1,16 @@
 package com.example.jure_lokovsek.personalbudget;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,16 +24,23 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.jure_lokovsek.personalbudget.Database.BudgetType;
 import com.example.jure_lokovsek.personalbudget.Database.DatabaseManager;
 import com.example.jure_lokovsek.personalbudget.Fragment.BudgetListFragment;
 import com.example.jure_lokovsek.personalbudget.Fragment.GraphViewFragment;
+import com.example.jure_lokovsek.personalbudget.Room.BudgetR;
+import com.example.jure_lokovsek.personalbudget.Room.BudgetRViewModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private DatabaseManager mDatabaseManager;
     private Context mContext;
+
+    private BudgetRViewModel mBudgetRViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         mContext = MainActivity.this;
         mDatabaseManager = new DatabaseManager(mContext);
+
+        mBudgetRViewModel = ViewModelProviders.of(this).get(BudgetRViewModel.class);
+        mBudgetRViewModel.getrLiveData().observe(this, new Observer<List<BudgetR>>() {
+            @Override
+            public void onChanged(@Nullable List<BudgetR> budgetRS) {
+                // update listview
+                Log.d(TAG, "onChange");
+                Toast.makeText(mContext, "onChange", Toast.LENGTH_LONG).show();
+            }
+        });
 
         loadMainFragment();
      //   mDatabaseManager.izpis(mDatabaseManager.getTodayBudgetList());
