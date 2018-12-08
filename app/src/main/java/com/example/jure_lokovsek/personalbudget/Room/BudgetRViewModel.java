@@ -33,7 +33,7 @@ public class BudgetRViewModel extends AndroidViewModel{
         repository.deleteAll();
     }
 
-    public LiveData<List<BudgetR>> getrLiveData() {
+    public LiveData<List<BudgetR>> getLiveData() {
         return rLiveData;
     }
 }

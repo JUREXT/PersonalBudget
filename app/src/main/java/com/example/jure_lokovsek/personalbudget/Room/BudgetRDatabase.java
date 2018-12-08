@@ -44,10 +44,10 @@ public abstract class BudgetRDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), ThreadLocalRandom.current().nextDouble(), "1 insertt db", BudgetType.DRINKS));
-            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), ThreadLocalRandom.current().nextDouble(), "2 insertt db", BudgetType.CAR));
-            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), ThreadLocalRandom.current().nextDouble(), "3 insertt db", BudgetType.FOOD));
-            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), ThreadLocalRandom.current().nextDouble(), "4 insertt db", BudgetType.RENT));
+            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), 22.45D, "1 insertt db", BudgetType.DRINKS));
+            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), 15.14D, "2 insertt db", BudgetType.CAR));
+            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), 14.23D, "3 insertt db", BudgetType.FOOD));
+            budgetRDao.insert(new BudgetR(new DateTime().getMillis(), 28.47D, "4 insertt db", BudgetType.RENT));
             return null;
         }
     }

@@ -15,17 +15,18 @@ import android.widget.TextView;
 
 import com.example.jure_lokovsek.personalbudget.Database.Budget;
 import com.example.jure_lokovsek.personalbudget.R;
+import com.example.jure_lokovsek.personalbudget.Room.BudgetR;
 
 import org.greenrobot.greendao.annotation.Convert;
 
 import java.util.List;
 
-public class BudgetAdapter extends ArrayAdapter<Budget> implements View.OnClickListener {
+public class BudgetAdapter extends ArrayAdapter<BudgetR> implements View.OnClickListener {
 
-    private List<Budget> mBudgetList;
+    private List<BudgetR> mBudgetList;
     private Context mContext;
 
-    public BudgetAdapter(List<Budget> data, Context context) {
+    public BudgetAdapter(List<BudgetR> data, Context context) {
         super(context, R.layout.budget_list_view_row, data);
         this.mBudgetList = mBudgetList;
         this.mContext = context;
@@ -34,7 +35,7 @@ public class BudgetAdapter extends ArrayAdapter<Budget> implements View.OnClickL
     @Override
     public void onClick(View view) {
         int position = (int) view.getTag();
-        Budget budget = getItem(position);
+        BudgetR budget = getItem(position);
        // Object object= getItem(position);
        // DataModel dataModel=(DataModel)object;
         Snackbar.make(view, "Komentar " +budget.getComment(), Snackbar.LENGTH_LONG).setAction("No action", null).show();
@@ -45,7 +46,7 @@ public class BudgetAdapter extends ArrayAdapter<Budget> implements View.OnClickL
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Budget budget = getItem(position);
+        BudgetR budget = getItem(position);
         ViewHolder viewHolder;
         final View result;
         if(convertView == null){

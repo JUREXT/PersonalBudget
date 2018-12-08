@@ -33,13 +33,14 @@ import com.example.jure_lokovsek.personalbudget.Fragment.GraphViewFragment;
 import com.example.jure_lokovsek.personalbudget.Room.BudgetR;
 import com.example.jure_lokovsek.personalbudget.Room.BudgetRViewModel;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private DatabaseManager mDatabaseManager;
     private Context mContext;
-
     private BudgetRViewModel mBudgetRViewModel;
 
     @Override
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDatabaseManager = new DatabaseManager(mContext);
 
         mBudgetRViewModel = ViewModelProviders.of(this).get(BudgetRViewModel.class);
-        mBudgetRViewModel.getrLiveData().observe(this, new Observer<List<BudgetR>>() {
+        mBudgetRViewModel.getLiveData().observe(this, new Observer<List<BudgetR>>() {
             @Override
             public void onChanged(@Nullable List<BudgetR> budgetRS) {
                 // update listview
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final EditText value = dialogView.findViewById(R.id.editText_value);
                 final Spinner spinnerType = dialogView.findViewById(R.id.spinner_type);
                 // Creating adapter for spinner
-                ArrayAdapter<BudgetType> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, mDatabaseManager.getBudgetTypeList());
+                ArrayAdapter<BudgetType> dataAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, BudgetType.getBudgetTypeList());
                 // Drop down layout style - list view with radio button
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 // attaching data adapter to spinner
@@ -98,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(value.length() > 0){
-                            mDatabaseManager.storeBudget(Double.valueOf(value.getText().toString()), (BudgetType) spinnerType.getSelectedItem(), null);
+                          //  mDatabaseManager.storeBudget(Double.valueOf(value.getText().toString()), (BudgetType) spinnerType.getSelectedItem(), null);
+                          mBudgetRViewModel.insert(new BudgetR(DateTime.now().getMillis(), Double.valueOf(value.getText().toString()), "No comm", (BudgetType) spinnerType.getSelectedItem()));
                             Snackbar.make(dialogView, "Budget Shranjen!", Snackbar.LENGTH_LONG).setAction(null, null).show();
                         } else {
                             Snackbar.make(dialogView, "Vnesi podatke!", Snackbar.LENGTH_LONG).setAction(null, null).show();

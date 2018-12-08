@@ -1,20 +1,27 @@
 package com.example.jure_lokovsek.personalbudget.Fragment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.jure_lokovsek.personalbudget.Adapters.BudgetAdapter;
 import com.example.jure_lokovsek.personalbudget.Database.Budget;
 import com.example.jure_lokovsek.personalbudget.Database.DatabaseManager;
 import com.example.jure_lokovsek.personalbudget.R;
+import com.example.jure_lokovsek.personalbudget.Room.BudgetR;
+import com.example.jure_lokovsek.personalbudget.Room.BudgetRViewModel;
 
 import java.util.List;
 
@@ -27,6 +34,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class BudgetListFragment extends Fragment {
+    private final static String TAG = BudgetListFragment.class.getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,7 +50,8 @@ public class BudgetListFragment extends Fragment {
     private FragmentManager mFragmentManager;
     private DatabaseManager mDatabaseManager;
     private ListView listView;
-    private List<Budget> budgetList;
+    private List<BudgetR> budgetList;
+    private BudgetRViewModel mBudgetRViewModel;
 
     public BudgetListFragment() {
         // Required empty public constructor
@@ -87,15 +96,20 @@ public class BudgetListFragment extends Fragment {
         getActivity().setTitle("Today Budget List");
         listView = view.findViewById(R.id.budget_list_view);
 
-        budgetList = mDatabaseManager.getTodayBudgetList();
-        BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList, mContext);
-        listView.setAdapter(budgetAdapter);
-
+        mBudgetRViewModel = ViewModelProviders.of(this).get(BudgetRViewModel.class);
+        mBudgetRViewModel.getLiveData().observe(this, new Observer<List<BudgetR>>() {
+            @Override
+            public void onChanged(@Nullable List<BudgetR> budgetRS) {
+                // update listview
+                Log.d(TAG, "onChange");
+               // budgetList = budgetRS;
+                BudgetAdapter budgetAdapter = new BudgetAdapter(budgetRS, mContext);
+                listView.setAdapter(budgetAdapter);
+                Toast.makeText(mContext, "onChange", Toast.LENGTH_LONG).show();
+            }
+        });
 
         return view;
-    }
-
-    private void runAndThinkAtTheSameTime() {
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
